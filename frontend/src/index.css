@@ -1,68 +1,62 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import "tailwindcss";
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@theme {
+    --color-primary: #1b3c53;
+    --color-primary-alt: #456882;
+    --color-secondary: #d2c1b6;
+    --color-secondary-alt: #f9f3ef;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+@layer base {
+    h1 {
+        @apply text-4xl mb-5 font-bold;
+    }
+    h2 {
+        @apply text-2xl mb-5 font-bold;
+    }
+    h3 {
+        @apply text-xl mb-3 font-bold;
+    }
+    label {
+        @apply mb-2 text-xl font-bold;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        @apply text-xl h-10 bg-slate-200 mb-5 rounded-md;
+    }
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+@layer components {
+    .nav-btn {
+        @apply p-2 mx-2 font-bold bg-secondary-alt text-primary rounded-lg;
+    }
+
+    .landing-section {
+        @apply my-5 flex space-x-5 items-center;
+    }
+
+    .landing-section-image {
+        @apply h-70 w-150 rounded-lg bg-cover bg-center;
+    }
+
+    .button {
+        @apply p-4 bg-primary text-2xl font-bold text-secondary-alt rounded-md;
+    }
+
+    .button-alt {
+        @apply p-4 mx-4 bg-secondary text-2xl font-bold text-primary-alt rounded-md;
+    }
+
+    .user-form-icon {
+        @apply h-30 bg-contain bg-center;
+    }
+
+    .section-heading {
+        @apply p-10;
+    }
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+@utility flex-col-center {
+    @apply flex flex-col justify-center items-center;
 }
