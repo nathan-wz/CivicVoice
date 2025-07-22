@@ -1,9 +1,6 @@
 function UserForm() {
     return (
-        <form
-            className="border border-secondary-alt shadow-xl rounded-lg py-15 px-8 my-10 mx-auto sm:w-xl md:w-[60%] flex flex-col"
-            action=""
-        >
+        <form className="user-form" action="">
             {/* Login */}
 
             <label htmlFor="email">Email</label>

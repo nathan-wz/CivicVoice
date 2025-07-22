@@ -1,6 +1,6 @@
 function Navbar() {
     return (
-        <nav className=" h-15 px-2 bg-primary flex justify-between items-center ">
+        <nav className="z-999 sticky top-0 h-15 px-2 bg-primary flex justify-between items-center ">
             <div>
                 <div></div>
                 <div className="text-secondary-alt">CivicVoice</div>

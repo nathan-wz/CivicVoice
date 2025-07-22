@@ -11,19 +11,31 @@
     h1 {
         @apply text-4xl mb-5 font-bold;
     }
+
     h2 {
         @apply text-2xl mb-5 font-bold;
     }
+
     h3 {
         @apply text-xl mb-3 font-bold;
     }
+
     label {
         @apply mb-2 text-xl font-bold;
     }
+
+    textarea {
+        @apply text-xl bg-slate-200 mb-5 rounded-md;
+    }
+
     input[type="text"],
     input[type="email"],
     input[type="password"] {
         @apply text-xl h-10 bg-slate-200 mb-5 rounded-md;
+    }
+
+    input[type="submit"] {
+        @apply self-end p-4 bg-primary text-2xl font-bold text-secondary-alt rounded-md;
     }
 }
 
@@ -48,12 +60,32 @@
         @apply p-4 mx-4 bg-secondary text-2xl font-bold text-primary-alt rounded-md;
     }
 
+    .user-form {
+        @apply border border-secondary-alt shadow-xl rounded-lg py-10 px-8 my-10 mx-auto sm:w-xl md:w-[60%] flex flex-col;
+    }
+
     .user-form-icon {
         @apply h-30 bg-contain bg-center;
     }
 
     .section-heading {
-        @apply p-10;
+        @apply p-10 mb-3 mx-3 bg-slate-100 rounded-lg;
+    }
+
+    .sidemenu-button {
+        @apply p-4 m-1 bg-primary text-left text-xl font-bold text-secondary-alt rounded-md;
+    }
+
+    .home-container {
+        @apply flex justify-center;
+    }
+
+    .home-content {
+        @apply md:w-[70%];
+    }
+
+    .home-form {
+        @apply border border-secondary-alt shadow-xl rounded-lg py-10 px-8 mx-auto flex flex-col;
     }
 }
 
