@@ -1,7 +1,7 @@
 import UserForm from "../components/UserForm";
 import icon from "../assets/icons/user-solid.svg";
 
-function Login() {
+function Register() {
     return (
         <div className="flex items-center">
             <div className="flex-col-center">
@@ -10,9 +10,9 @@ function Login() {
                     Create your <br /> CivicVoice account
                 </h2>
             </div>
-            <UserForm route="/api/token/" method="login" />
+            <UserForm route="/api/user/register" method="register" />
         </div>
     );
 }
 
-export default Login;
+export default Register;

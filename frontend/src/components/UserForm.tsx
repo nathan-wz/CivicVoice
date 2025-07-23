@@ -1,38 +1,85 @@
-function UserForm() {
+import { useState } from "react";
+import api from "../api";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
+import { useNavigate } from "react-router-dom";
+
+interface UserFormProps {
+    route: string;
+    method: string;
+}
+
+function UserForm({ route, method }: UserFormProps) {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const navigate = useNavigate();
+
+    const name = method === "login" ? "Login" : "Register";
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            const payload =
+                method === "login"
+                    ? { username, password }
+                    : {
+                          username,
+                          email,
+                          password,
+                          confirm_password: confirmPassword,
+                      };
+
+            const res = await api.post(route, payload);
+            if (method === "login") {
+                localStorage.setItem(ACCESS_TOKEN, res.data.access);
+                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                navigate("/");
+            } else {
+                navigate("/login");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
-        <form className="user-form" action="">
+        <form onSubmit={handleSubmit} className="user-form">
             {/* Login */}
 
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" />
+            {method === "login" ? (
+                <>
+                    <label htmlFor="email">Email</label>
+                    <input type="email" value={email} />
 
-            <label htmlFor="password">Password</label>
-            <input type="password" />
+                    <label htmlFor="password">password</label>
+                    <input type="password" value={password} />
+                </>
+            ) : (
+                <>
+                    <label htmlFor="username">Username</label>
+                    <input type="text" value={username} />
 
-            <input type="submit" value="Sign up" className="button" />
+                    <label htmlFor="email">Email</label>
+                    <input type="email" value={email} />
 
-            {/* Sign up */}
+                    <label htmlFor="password">password</label>
+                    <input type="password" value={password} />
 
-            <label htmlFor="username">Username</label>
-            <input type="text" />
+                    <label htmlFor="confirm-password">Confirm Password</label>
+                    <input type="password" value={confirmPassword} />
 
-            <label htmlFor="email">Email</label>
-            <input type="email" />
+                    <label htmlFor="location">Location</label>
+                    <div className="flex justify-between w-full">
+                        <input type="text" placeholder="Country" />
+                        <input type="text" placeholder="City" />
+                        <input type="text" placeholder="County" />
+                    </div>
+                </>
+            )}
 
-            <label htmlFor="password">password</label>
-            <input type="password" />
-
-            <label htmlFor="confirm-password">Confirm Password</label>
-            <input type="password" />
-
-            <label htmlFor="location">Location</label>
-            <div className="flex justify-between w-full">
-                <input type="text" placeholder="Country" />
-                <input type="text" placeholder="City" />
-                <input type="text" placeholder="County" />
-            </div>
-
-            <input type="submit" value="Sign up" className="button" />
+            <input type="submit" value={name} className="button" />
         </form>
     );
 }

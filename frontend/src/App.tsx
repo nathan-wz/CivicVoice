@@ -10,6 +10,7 @@ import Issues from "./pages/Issues.tsx";
 import Announcements from "./pages/Announcements.tsx";
 import MakeAnAnnouncement from "./pages/MakeAnAnnouncement.tsx";
 import AnnouncementPost from "./pages/AnnouncementPost.tsx";
+import Register from "./pages/Register.tsx";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
             <Routes>
                 <Route path="/landing" element={<Landing />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/" element={<Dashboard />} />
                 <Route path="issues" element={<Issues />} />
                 <Route path="/issue-post" element={<IssuePost />} />
