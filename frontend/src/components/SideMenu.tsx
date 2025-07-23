@@ -1,11 +1,26 @@
+import { Link } from "react-router-dom";
+
 function SideMenu() {
     return (
         <div className="px-5 py-15 self-start sticky top-0 flex flex-col">
-            <button className="sidemenu-button">Home</button>
-            <button className="sidemenu-button">Issues</button>
-            <button className="sidemenu-button">Announcements</button>
-            <button className="sidemenu-button">Post an Issue</button>
-            <button className="sidemenu-button">Profile</button>
+            <Link to="/" className="sidemenu-button">
+                Home
+            </Link>
+            <Link to="/issues" className="sidemenu-button">
+                Issues
+            </Link>
+            <Link to="/annoucements" className="sidemenu-button">
+                Announcements
+            </Link>
+            <Link to="/post-an-issue" className="sidemenu-button">
+                Post an Issue
+            </Link>
+            <Link to="/make-an-announcement" className="sidemenu-button">
+                Make an <br /> announcement
+            </Link>
+            <Link to="/profile" className="sidemenu-button">
+                Profile
+            </Link>
         </div>
     );
 }

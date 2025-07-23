@@ -11,6 +11,7 @@ import Announcements from "./pages/Announcements.tsx";
 import MakeAnAnnouncement from "./pages/MakeAnAnnouncement.tsx";
 import AnnouncementPost from "./pages/AnnouncementPost.tsx";
 import Register from "./pages/Register.tsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 
 function App() {
     return (
@@ -18,17 +19,29 @@ function App() {
             <Navbar />
             <Routes>
                 <Route path="/landing" element={<Landing />} />
+                <Route path="/profile" element={<div>Profile</div>} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/" element={<Dashboard />} />
                 <Route path="issues" element={<Issues />} />
                 <Route path="/issue-post" element={<IssuePost />} />
-                <Route path="/post-an-issue" element={<PostAnIssue />} />
+                <Route
+                    path="/post-an-issue"
+                    element={
+                        <ProtectedRoute>
+                            <PostAnIssue />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="/pinned-issues" element={<PinnedIssues />} />
                 <Route path="/annoucements" element={<Announcements />} />
                 <Route
                     path="/make-an-announcement"
-                    element={<MakeAnAnnouncement />}
+                    element={
+                        <ProtectedRoute>
+                            <MakeAnAnnouncement />
+                        </ProtectedRoute>
+                    }
                 />
                 <Route
                     path="/announcement-post"

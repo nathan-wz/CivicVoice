@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import Role, Location, User, Issue, Comment
-from django.contrib.auth import get_user_model
 
 
 class RoleSerializer(serializers.ModelSerializer):
@@ -20,8 +19,21 @@ class UserSerializer(serializers.ModelSerializer):
     location = LocationSerializer(read_only=True)
 
     class Meta:
-        model = get_user_model()
-        fields = ["id", "username", "email", "role", "location", "joined_at"]
+        model = User
+        fields = [
+            "id",
+            "username",
+            "password",
+            "email",
+            "role",
+            "location",
+            "joined_at",
+        ]
+        extra_kwargs = {"password": {"write_only": True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user
 
 
 class IssueSerializer(serializers.ModelSerializer):

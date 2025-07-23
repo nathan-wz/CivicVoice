@@ -28,10 +28,10 @@ function UserForm({ route, method }: UserFormProps) {
                           username,
                           email,
                           password,
-                          confirm_password: confirmPassword,
                       };
 
             const res = await api.post(route, payload);
+
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
@@ -50,25 +50,49 @@ function UserForm({ route, method }: UserFormProps) {
 
             {method === "login" ? (
                 <>
-                    <label htmlFor="email">Email</label>
-                    <input type="email" value={email} />
+                    <label htmlFor="username">Username</label>
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
 
                     <label htmlFor="password">password</label>
-                    <input type="password" value={password} />
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
                 </>
             ) : (
                 <>
                     <label htmlFor="username">Username</label>
-                    <input type="text" value={username} />
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
 
                     <label htmlFor="email">Email</label>
-                    <input type="email" value={email} />
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
 
                     <label htmlFor="password">password</label>
-                    <input type="password" value={password} />
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
 
                     <label htmlFor="confirm-password">Confirm Password</label>
-                    <input type="password" value={confirmPassword} />
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
 
                     <label htmlFor="location">Location</label>
                     <div className="flex justify-between w-full">

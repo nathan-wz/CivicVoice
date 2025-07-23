@@ -10,7 +10,7 @@ function PostAnIssue() {
                     <h1>Post an issue</h1>
                     <p>Make your voice heard</p>
                 </div>
-                <IssueForm />
+                <IssueForm route="/api/issues/" />
             </div>
         </div>
     );

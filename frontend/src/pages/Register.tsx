@@ -10,7 +10,7 @@ function Register() {
                     Create your <br /> CivicVoice account
                 </h2>
             </div>
-            <UserForm route="/api/user/register" method="register" />
+            <UserForm route="/api/user/register/" method="register" />
         </div>
     );
 }
