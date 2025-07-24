@@ -12,7 +12,7 @@ function MakeAnAnnouncement() {
                         Let your community know <br /> what you've been up to
                     </p>
                 </div>
-                <AnnouncementForm />
+                <AnnouncementForm route="/api/announcements/" />
             </div>
         </div>
     );

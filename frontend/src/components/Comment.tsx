@@ -1,16 +1,16 @@
+import { type CommentData } from "../types";
+
 interface CommentProps {
-    username: string;
-    description: string;
-    created: string;
+    comment: CommentData;
 }
 
-function Comment({ username, description, created }: CommentProps) {
+function Comment({ comment }: CommentProps) {
     return (
         <div className="p-5 mb-5 mx-3 bg-secondary-alt rounded-lg">
-            <h3>
-                {username} {created} days ago
+            <h3 className="flex justify-between">
+                <div>{comment.user}</div> <div>{comment.created_at}</div>
             </h3>
-            <p>{description}</p>
+            <p>{comment.content}</p>
         </div>
     );
 }

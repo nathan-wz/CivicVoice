@@ -3,7 +3,7 @@ interface PinnedIssueProps {
     description: string;
 }
 
-function PinnedIssue({ title, description }: PinnedIssueProps) {
+function DashboardPinnedIssue({ title, description }: PinnedIssueProps) {
     return (
         <div className="inline-block h-40 w-50 p-5 mx-3 bg-secondary-alt rounded-lg">
             <h3>{title}</h3>
@@ -12,4 +12,4 @@ function PinnedIssue({ title, description }: PinnedIssueProps) {
     );
 }
 
-export default PinnedIssue;
+export default DashboardPinnedIssue;

@@ -19,12 +19,12 @@ function App() {
             <Navbar />
             <Routes>
                 <Route path="/landing" element={<Landing />} />
-                <Route path="/profile" element={<div>Profile</div>} />
+                <Route path="/profile/:id" element={<div>Profile</div>} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/" element={<Dashboard />} />
                 <Route path="issues" element={<Issues />} />
-                <Route path="/issue-post" element={<IssuePost />} />
+                <Route path="/issue/:id" element={<IssuePost />} />
                 <Route
                     path="/post-an-issue"
                     element={
@@ -34,7 +34,7 @@ function App() {
                     }
                 />
                 <Route path="/pinned-issues" element={<PinnedIssues />} />
-                <Route path="/annoucements" element={<Announcements />} />
+                <Route path="/announcements" element={<Announcements />} />
                 <Route
                     path="/make-an-announcement"
                     element={
@@ -44,7 +44,7 @@ function App() {
                     }
                 />
                 <Route
-                    path="/announcement-post"
+                    path="/announcement/:id"
                     element={<AnnouncementPost />}
                 />
                 <Route path="*" element={<div>Page Not Found</div>} />

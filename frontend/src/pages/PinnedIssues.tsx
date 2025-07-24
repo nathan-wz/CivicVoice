@@ -1,4 +1,4 @@
-import Issue from "../components/Issue";
+import DashboardPinnedIssue from "../components/DashboardPinnedIssue";
 import SideMenu from "../components/SideMenu";
 
 function PinnedIssues() {
@@ -10,20 +10,17 @@ function PinnedIssues() {
                     <h1>Pinned Issues</h1>
                     <p>Follow up on what's important to you</p>
                 </div>
-                <Issue
+                <DashboardPinnedIssue
                     title="Issue Title"
                     description="Issue description"
-                    created="created 3 days ago"
                 />
-                <Issue
+                <DashboardPinnedIssue
                     title="Issue Title"
                     description="Issue description"
-                    created="created 3 days ago"
                 />
-                <Issue
+                <DashboardPinnedIssue
                     title="Issue Title"
                     description="Issue description"
-                    created="created 3 days ago"
                 />
             </div>
         </div>

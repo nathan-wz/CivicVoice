@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 """
 Django settings for backend project.
 
@@ -54,6 +56,14 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=365 * 100),  # 100 years
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=365 * 100),  # 100 years
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",

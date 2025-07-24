@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Role, Location, User, Issue, Comment
+from django.contrib.contenttypes.models import ContentType
+from .models import Role, Location, User, Issue, Comment, Announcement
 
 
 class RoleSerializer(serializers.ModelSerializer):
@@ -45,10 +46,62 @@ class IssueSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class CommentSerializer(serializers.ModelSerializer):
+class AnnouncementSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    issue = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Announcement
+        fields = "__all__"
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    model = serializers.CharField(write_only=True, required=False)
+    object_id = serializers.IntegerField(required=True)
+    user = serializers.StringRelatedField(read_only=True)
+    parent_comment = serializers.PrimaryKeyRelatedField(
+        queryset=Comment.objects.all(), required=False, allow_null=True
+    )
 
     class Meta:
         model = Comment
-        fields = "__all__"
+        fields = [
+            "id",
+            "user",
+            "content",
+            "created_at",
+            "object_id",
+            "model",
+            "parent_comment",
+        ]
+
+    def validate(self, data):
+        model_name = data.get("model")
+        obj_id = data.get("object_id")
+
+        if not model_name:
+            raise serializers.ValidationError({"model": "This field is required."})
+
+        model_class = {"issue": Issue, "announcement": Announcement}.get(
+            model_name.lower()
+        )
+        if not model_class:
+            raise serializers.ValidationError({"model": "Invalid model name."})
+
+        try:
+            content_type = ContentType.objects.get_for_model(model_class)
+            model_class.objects.get(pk=obj_id)  # ← checks existence
+        except ContentType.DoesNotExist:
+            raise serializers.ValidationError({"model": "Could not find model."})
+        except model_class.DoesNotExist:
+            raise serializers.ValidationError(
+                {
+                    "object_id": f"{model_class.__name__} with id {obj_id} does not exist."
+                }
+            )
+
+        data["content_type"] = content_type
+        return data
+
+    def create(self, validated_data):
+        validated_data.pop("model", None)  # Remove model after validating
+        return super().create(validated_data)

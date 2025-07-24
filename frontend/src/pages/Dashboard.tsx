@@ -1,8 +1,26 @@
+import { useState, useEffect } from "react";
+import api from "../api";
 import Issue from "../components/Issue";
 import PinnedIssue from "../components/DashboardPinnedIssue";
 import SideMenu from "../components/SideMenu";
 
 function Dashboard() {
+    const [issues, setIssues] = useState([{ id: 0 }]);
+
+    useEffect(() => {
+        getIssues();
+    }, []);
+
+    const getIssues = () => {
+        api.get("/api/issues/")
+            .then((res) => res.data)
+            .then((data) => {
+                setIssues(data);
+                console.log(data);
+            })
+            .catch((err) => console.error(err));
+    };
+
     return (
         <div className="home-container">
             <SideMenu />
@@ -47,26 +65,9 @@ function Dashboard() {
                 </div>
 
                 <div>
-                    <Issue
-                        title="Issue tile"
-                        description="Issue description"
-                        created="created 7 days ago"
-                    />
-                    <Issue
-                        title="Issue tile"
-                        description="Issue description"
-                        created="created 7 days ago"
-                    />
-                    <Issue
-                        title="Issue tile"
-                        description="Issue description"
-                        created="created 7 days ago"
-                    />
-                    <Issue
-                        title="Issue tile"
-                        description="Issue description"
-                        created="created 7 days ago"
-                    />
+                    {issues.map((issue) => (
+                        <Issue issue={issue} key={issue.id} />
+                    ))}
                 </div>
             </div>
         </div>

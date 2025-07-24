@@ -4,15 +4,17 @@ from .views import (
     RoleViewSet,
     LocationViewSet,
     UserViewSet,
-    IssuesViewSet,
+    IssueViewSet,
     CommentViewSet,
+    AnnouncementViewSet,
 )
 
 router = DefaultRouter()
 router.register(r"roles", RoleViewSet)
 router.register(r"locations", LocationViewSet)
 router.register(r"users", UserViewSet)
-router.register(r"issues", IssuesViewSet)
+router.register(r"issues", IssueViewSet)
+router.register(r"announcements", AnnouncementViewSet)
 router.register(r"comments", CommentViewSet)
 
 urlpatterns = [

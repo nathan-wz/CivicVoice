@@ -9,7 +9,7 @@ function SideMenu() {
             <Link to="/issues" className="sidemenu-button">
                 Issues
             </Link>
-            <Link to="/annoucements" className="sidemenu-button">
+            <Link to="/announcements" className="sidemenu-button">
                 Announcements
             </Link>
             <Link to="/post-an-issue" className="sidemenu-button">

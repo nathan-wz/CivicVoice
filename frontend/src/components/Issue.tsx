@@ -1,17 +1,17 @@
+import { type IssueData } from "../types";
+
 interface IssueProps {
-    title: string;
-    description: string;
-    created: string;
+    issue: IssueData;
 }
 
-function Issue({ title, description, created }: IssueProps) {
+function Issue({ issue }: IssueProps) {
     return (
         <div className="p-5 mb-5 mx-3 bg-secondary-alt rounded-lg">
             <div className="flex justify-between">
-                <h3>{title}</h3>
-                <h3>{created}</h3>
+                <h3>{issue.title}</h3>
+                <h3>{issue.created_at}</h3>
             </div>
-            <p>{description}</p>
+            <p>{issue.description}</p>
         </div>
     );
 }

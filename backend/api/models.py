@@ -1,10 +1,11 @@
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import AbstractUser, Group, Permission
 
 
 class Role(models.Model):
 
-    role_id = models.AutoField(primary_key=True)
     name = models.CharField(
         max_length=50,
         unique=True,
@@ -21,7 +22,6 @@ class Role(models.Model):
 
 
 class Location(models.Model):
-    location_id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=100, help_text="The country of the location")
     city = models.CharField(max_length=100, help_text="The city of the location")
     county = models.CharField(
@@ -91,7 +91,6 @@ class User(AbstractUser):
 
 
 class Issue(models.Model):
-    issue_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -143,20 +142,57 @@ class Issue(models.Model):
         return self.title
 
 
+class Announcement(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="announcements",
+        help_text="The user who posted this announcement",
+    )
+    title = models.CharField(max_length=255, help_text="The title of the announcement")
+    description = models.TextField(help_text="The description of the announcement")
+    issue_reference = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="The issue that is referenced in this announcement, if any",
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True, help_text="The date and time the announcement was made"
+    )
+
+    class Meta:
+        verbose_name = "Announcement"
+        verbose_name_plural = "Announcements"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.title
+
+
 class Comment(models.Model):
-    comment_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name="comments",
         help_text="The user who posted this comment",
     )
-    issue = models.ForeignKey(
-        Issue,
+
+    # Generic foriegn key setup
+    content_type = models.ForeignKey(
+        ContentType,
         on_delete=models.CASCADE,
-        related_name="comments",
-        help_text="The issue this comment belongs to",
+        null=True,
+        blank=True,
+        help_text="The model type (Issue, Announcement, etc.)",
     )
+
+    object_id = models.PositiveIntegerField(
+        null=True, blank=True, help_text="The ID of the related object"
+    )
+    content_object = GenericForeignKey("content_type", "object_id")
+
     parent_comment = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
@@ -176,4 +212,6 @@ class Comment(models.Model):
         ordering = ["created_at"]
 
     def __str__(self):
-        return f"Comment by {self.user.username} on Issue '{self.issue.title}'"
+        return (
+            f"Comment by {self.user.username} on {self.content_type} '{self.object_id}'"
+        )
