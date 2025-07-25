@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import api from "../api";
 import Issue from "../components/Issue";
-import PinnedIssue from "../components/DashboardPinnedIssue";
 import SideMenu from "../components/SideMenu";
+import StatusChart from "../components/StatusChart";
+import { Link } from "react-router-dom";
+import issueTrackerHeading from "../assets/images/landingSection3.jpg";
+import issueHeading2 from "../assets/images/issue_heading_2.jpg";
 
 function Dashboard() {
     const [issues, setIssues] = useState([{ id: 0 }]);
@@ -25,48 +28,35 @@ function Dashboard() {
         <div className="home-container">
             <SideMenu />
             <div className="home-content">
-                <div className="section-heading">
-                    <h2>Issue tracker</h2>
+                <div
+                    className="section-heading"
+                    style={{
+                        backgroundImage: `linear-gradient(to right, black 0%, black 20%, transparent 100%), url('${issueTrackerHeading}')`,
+                    }}
+                >
+                    <h2 className="text-secondary-alt">Issue tracker</h2>
                 </div>
 
-                <div className="p-10 mx-3 mb-5 h-100 bg-slate-100 rounded-lg">
-                    <h1>Graph</h1>
-                </div>
-
-                {/* Pinned issues */}
-
-                <div className="section-heading">
-                    <h2>Pinned Issues</h2>
-                </div>
-
-                <div className="mb-5 w-full overflow-x-scroll whitespace-nowrap">
-                    <PinnedIssue
-                        title="Issue"
-                        description="Issue description"
-                    />
-                    <PinnedIssue
-                        title="Issue"
-                        description="Issue description"
-                    />
-                    <PinnedIssue
-                        title="Issue"
-                        description="Issue description"
-                    />
-                    <PinnedIssue
-                        title="Issue"
-                        description="Issue description"
-                    />
+                <div className="p-10 mx-3 mb-5 bg-slate-100 rounded-lg">
+                    <StatusChart />
                 </div>
 
                 {/* Other Community Issues */}
 
-                <div className="section-heading">
-                    <h2>Other Community Issues</h2>
+                <div
+                    className="section-heading"
+                    style={{
+                        backgroundImage: `linear-gradient(to right, black 0%, black 20%, transparent 100%), url('${issueHeading2}')`,
+                    }}
+                >
+                    <h2 className="text-secondary-alt">Community Issues</h2>
                 </div>
 
                 <div>
                     {issues.map((issue) => (
-                        <Issue issue={issue} key={issue.id} />
+                        <Link to={`/issue/${issue.id}`}>
+                            <Issue issue={issue} key={issue.id} />
+                        </Link>
                     ))}
                 </div>
             </div>

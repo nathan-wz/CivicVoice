@@ -93,13 +93,13 @@ function UserForm({ route, method }: UserFormProps) {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
-
+                    {/* 
                     <label htmlFor="location">Location</label>
                     <div className="flex justify-between w-full">
                         <input type="text" placeholder="Country" />
                         <input type="text" placeholder="City" />
                         <input type="text" placeholder="County" />
-                    </div>
+                    </div> */}
                 </>
             )}
 

@@ -9,6 +9,7 @@ export interface CommentData {
     user?: string;
     content?: string;
     created_at?: string;
+    updated_at?: string;
 }
 
 export interface IssueData {
@@ -16,7 +17,9 @@ export interface IssueData {
     title?: string;
     description?: string;
     created_at?: string;
+    updated_at?: string;
     category?: string;
+    votes?: number;
     status?: string;
     user?: UserData;
 }
@@ -28,4 +31,5 @@ export interface AnnouncementData {
     issue_reference?: string;
     user?: UserData;
     created_at?: string;
+    updated_at?: string;
 }

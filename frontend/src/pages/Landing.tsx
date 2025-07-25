@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
 import landingImage from "../assets/images/landingHeadingImage.jpg";
 import sectionImage from "../assets/images/landingSection1.jpg";
-import Footer from "../components/Footer";
+import sectionImage2 from "../assets/images/landingSection2.jpg";
+import sectionImage3 from "../assets/images/landingSection3.jpg";
 
 function Landing() {
     return (
-        <div>
+        <div className="mx-auto md:w-[70%]">
             {/* Main Heading */}
             <div
                 className="h-80 p-10 rounded-lg bg-cover bg-center"
@@ -52,14 +54,14 @@ function Landing() {
                 </div>
                 <div
                     className="landing-section-image"
-                    style={{ backgroundImage: `url('${sectionImage}')` }}
+                    style={{ backgroundImage: `url('${sectionImage2}')` }}
                 ></div>
             </div>
 
             <div className="landing-section">
                 <div
                     className="landing-section-image"
-                    style={{ backgroundImage: `url('${sectionImage}')` }}
+                    style={{ backgroundImage: `url('${sectionImage3}')` }}
                 ></div>
                 <div>
                     <h3>Real-Time Issue Reporting</h3>
@@ -78,12 +80,14 @@ function Landing() {
             <div className="my-10 flex flex-col justify-center items-center">
                 <h2>Start today</h2>
                 <div>
-                    <button className="button">Login</button>
-                    <button className="button-alt">Signup</button>
+                    <Link to="/login" className="button">
+                        Login
+                    </Link>
+                    <Link to="/register" className="button-alt">
+                        Signup
+                    </Link>
                 </div>
             </div>
-
-            <Footer />
         </div>
     );
 }

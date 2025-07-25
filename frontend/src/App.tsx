@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer.tsx";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard.tsx";
@@ -12,6 +13,8 @@ import MakeAnAnnouncement from "./pages/MakeAnAnnouncement.tsx";
 import AnnouncementPost from "./pages/AnnouncementPost.tsx";
 import Register from "./pages/Register.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import UpdateIssue from "./pages/UpdateIssue.tsx";
+import UpdateAnnouncement from "./pages/UpdateAnnouncement.tsx";
 
 function App() {
     return (
@@ -33,6 +36,14 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/issue/:id/edit"
+                    element={
+                        <ProtectedRoute>
+                            <UpdateIssue />
+                        </ProtectedRoute>
+                    }
+                />
                 <Route path="/pinned-issues" element={<PinnedIssues />} />
                 <Route path="/announcements" element={<Announcements />} />
                 <Route
@@ -44,11 +55,20 @@ function App() {
                     }
                 />
                 <Route
+                    path="/announcement/:id/edit"
+                    element={
+                        <ProtectedRoute>
+                            <UpdateAnnouncement />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
                     path="/announcement/:id"
                     element={<AnnouncementPost />}
                 />
                 <Route path="*" element={<div>Page Not Found</div>} />
             </Routes>
+            {/* <Footer /> */}
         </BrowserRouter>
     );
 }

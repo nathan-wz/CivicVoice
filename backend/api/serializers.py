@@ -43,7 +43,18 @@ class IssueSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Issue
-        fields = "__all__"
+        fields = [
+            "id",
+            "user",
+            "title",
+            "description",
+            "category",
+            "status",
+            "created_at",
+            "updated_at",
+            "vote_count",
+            "affected_locations",
+        ]
 
 
 class AnnouncementSerializer(serializers.ModelSerializer):

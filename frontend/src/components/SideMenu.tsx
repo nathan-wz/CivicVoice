@@ -18,9 +18,6 @@ function SideMenu() {
             <Link to="/make-an-announcement" className="sidemenu-button">
                 Make an <br /> announcement
             </Link>
-            <Link to="/profile" className="sidemenu-button">
-                Profile
-            </Link>
         </div>
     );
 }

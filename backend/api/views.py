@@ -2,6 +2,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
 from .models import Role, Location, User, Issue, Comment, Announcement
 from .serializers import (
@@ -43,6 +44,31 @@ class IssueViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @action(detail=True, methods=["post"])
+    def upvote(self, request, pk=None):
+        issue = self.get_object()
+        # Handle logic (e.g., IssueVote.objects.create(...))
+        # For simplicity, let's increment vote_count
+        issue.votes += 1
+        issue.save()
+        return Response({"message": "Upvoted"}, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["post"])
+    def downvote(self, request, pk=None):
+        issue = self.get_object()
+        issue.votes -= 1
+        issue.save()
+        return Response({"message": "Downvoted"}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=["get"])
+    def status_summary(self, request):
+        data = (
+            Issue.objects.values("status")
+            .annotate(count=Count("id"))
+            .order_by("status")
+        )
+        return Response(data)
 
 
 class AnnouncementViewSet(viewsets.ModelViewSet):

@@ -129,9 +129,6 @@ class Issue(models.Model):
         default="OPEN",
         help_text="The current status of the issue",
     )
-    votes = models.IntegerField(
-        default=0, help_text="The number of upvotes/support for the issue"
-    )
 
     class Meta:
         verbose_name = "Issue"
@@ -140,6 +137,21 @@ class Issue(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def vote_count(self):
+        upvotes = self.votes.filter(is_upvote=True).count()
+        downvotes = self.votes.filter(is_upvote=False).count()
+        return upvotes - downvotes
+
+
+class IssueVote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name="votes")
+    is_upvote = models.BooleanField()
+
+    class Meta:
+        unique_together = ("user", "issue")  # one vote per user per issue
 
 
 class Announcement(models.Model):

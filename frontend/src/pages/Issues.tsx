@@ -3,6 +3,7 @@ import api from "../api";
 import Issue from "../components/Issue";
 import SideMenu from "../components/SideMenu";
 import { Link } from "react-router-dom";
+import issueHeading1 from "../assets/images/issue_heading_1.jpg";
 
 function Issues() {
     const [issues, setIssues] = useState([{ id: 0 }]);
@@ -25,9 +26,14 @@ function Issues() {
         <div className="home-container">
             <SideMenu />
             <div className="home-content">
-                <div className="section-heading">
-                    <h1>Issues</h1>
-                    <p>
+                <div
+                    className="section-heading"
+                    style={{
+                        backgroundImage: `linear-gradient(to right, black 0%, black 20%, transparent 100%), url('${issueHeading1}')`,
+                    }}
+                >
+                    <h1 className="text-secondary-alt">Issues</h1>
+                    <p className="text-secondary-alt">
                         See what needs to be solved <br /> in your community
                     </p>
                 </div>
