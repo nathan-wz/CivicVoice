@@ -41,7 +41,7 @@ function IssueForm({ route, initialData }: IssueFormProps) {
         try {
             if (initialData) {
                 const res = await api.patch(route, payload);
-                console.log("Posted Issue: ", res.data);
+                console.log("Updated Issue: ", res.data);
             } else {
                 const res = await api.post(route, payload);
                 console.log("Posted Issue: ", res.data);

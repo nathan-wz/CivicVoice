@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../api";
 import { type CommentData, type AnnouncementData } from "../types";
@@ -7,6 +7,7 @@ import SideMenu from "../components/SideMenu";
 import Comment from "../components/Comment";
 import CommentForm from "../components/CommentForm";
 import { formatDate } from "../utils/formatDate";
+import CommentSection from "../components/CommentSection";
 
 function AnnouncementPost() {
     const { id } = useParams();
@@ -58,15 +59,21 @@ function AnnouncementPost() {
                             </h3>
                             <hr />
                             <br />
+                            <Link
+                                to={`/announcement/${announcement.id}/edit`}
+                                className="p-3 bg-primary text-secondary-alt rounded-md"
+                            >
+                                Update
+                            </Link>
                         </div>
                     )}
                 </div>
 
                 <h2 className="mt-10">{comments?.length || 0} Comments</h2>
-                <CommentForm model="announcement" objectId={announcement.id} />
-                {comments?.map((comment) => (
-                    <Comment key={comment.id} comment={comment} />
-                ))}
+                <CommentSection
+                    model="announcement"
+                    objectId={announcement.id}
+                />
             </div>
         </div>
     );

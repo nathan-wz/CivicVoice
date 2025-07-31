@@ -10,6 +10,8 @@ export interface CommentData {
     content?: string;
     created_at?: string;
     updated_at?: string;
+    replies?: CommentData[];
+    parent_comment?: number | null;
 }
 
 export interface IssueData {

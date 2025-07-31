@@ -67,11 +67,12 @@ class AnnouncementSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     model = serializers.CharField(write_only=True, required=False)
-    object_id = serializers.IntegerField(required=True)
+    object_id = serializers.IntegerField(required=False)
     user = serializers.StringRelatedField(read_only=True)
     parent_comment = serializers.PrimaryKeyRelatedField(
         queryset=Comment.objects.all(), required=False, allow_null=True
     )
+    replies = serializers.SerializerMethodField()
 
     class Meta:
         model = Comment
@@ -83,9 +84,19 @@ class CommentSerializer(serializers.ModelSerializer):
             "object_id",
             "model",
             "parent_comment",
+            "replies",
         ]
 
     def validate(self, data):
+        parent_comment = data.get("parent_comment", None)
+
+        # If this is a reply, skip object/model validation
+        if parent_comment:
+            data["content_type"] = parent_comment.content_type
+            data["object_id"] = parent_comment.object_id
+            return data
+
+        # For top-level comments
         model_name = data.get("model")
         obj_id = data.get("object_id")
 
@@ -100,7 +111,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
         try:
             content_type = ContentType.objects.get_for_model(model_class)
-            model_class.objects.get(pk=obj_id)  # ← checks existence
+            model_class.objects.get(pk=obj_id)
         except ContentType.DoesNotExist:
             raise serializers.ValidationError({"model": "Could not find model."})
         except model_class.DoesNotExist:
@@ -116,3 +127,7 @@ class CommentSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop("model", None)  # Remove model after validating
         return super().create(validated_data)
+
+    def get_replies(self, obj):
+        replies = obj.replies.all().order_by("created_at")
+        return CommentSerializer(replies, many=True, context=self.context).data

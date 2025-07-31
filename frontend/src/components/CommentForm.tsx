@@ -1,46 +1,52 @@
 import { useState } from "react";
+import type { CommentData } from "../types";
 import api from "../api";
 
 interface CommentFormProps {
     model?: string;
     objectId?: number;
-    onSuccess?: () => void;
+    parentId?: number;
+    onSuccess?: (comment: CommentData) => void;
 }
 
-function CommentForm({ model, objectId, onSuccess }: CommentFormProps) {
+function CommentForm({
+    model,
+    objectId,
+    parentId,
+    onSuccess,
+}: CommentFormProps) {
     const [content, setContent] = useState("");
 
-    const postComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
-            await api.post("/api/comments/", {
+            const res = await api.post("/api/comments/", {
                 content,
-                object_id: objectId,
                 model,
+                object_id: objectId,
+                parent_comment: parentId || null,
             });
-
             setContent("");
-            if (onSuccess) onSuccess();
+            if (onSuccess) onSuccess(res.data);
         } catch (err) {
-            console.error("Failed to post comment", err);
-            alert("Could not post comment");
+            console.error(err);
         }
     };
 
     return (
-        <form onSubmit={postComment}>
-            <input
-                type="text"
-                placeholder="Enter a comment..."
+        <form onSubmit={handleSubmit} className="mb-4">
+            <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                placeholder="Add a comment..."
+                className="w-full p-2 border rounded"
+                rows={3}
             />
             <button
                 type="submit"
-                className="p-3 font-bold bg-primary text-secondary-alt rounded-md"
+                className="mt-2 p-2 bg-primary text-white rounded"
             >
-                Send
+                Post
             </button>
         </form>
     );

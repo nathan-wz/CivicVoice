@@ -7,12 +7,12 @@ interface AnnouncementProps {
 
 function Announcement({ announcement }: AnnouncementProps) {
     return (
-        <div className="p-5 mb-5 mx-3 bg-secondary-alt rounded-lg">
+        <div className="whitespace-pre-line p-5 mb-5 mx-3 bg-secondary-alt rounded-lg">
             <div className="flex justify-between">
                 <h3>{announcement.title}</h3>
                 <h3>{formatDate(announcement.created_at)}</h3>
             </div>
-            <p>{announcement.description}</p>
+            <p className="line-clamp-6">{announcement.description}</p>
         </div>
     );
 }

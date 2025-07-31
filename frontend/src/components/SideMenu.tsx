@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function SideMenu() {
     return (
-        <div className="px-5 py-15 self-start sticky top-0 flex flex-col">
+        <div className="bg-slate-100 px-5 py-15 self-start sticky top-0 flex flex-col">
             <Link to="/" className="sidemenu-button">
                 Home
             </Link>

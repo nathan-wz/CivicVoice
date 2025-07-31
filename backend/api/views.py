@@ -1,4 +1,4 @@
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -91,6 +91,9 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
+    def get_queryset(self):
+        object_id = self.request.query_params.get("object_id")
+
     def get_permissions(self):
         if self.request.method in ["POST", "PUT", "PATCH", "DELETE"]:
             return [permissions.IsAuthenticated()]
@@ -100,7 +103,30 @@ class CommentViewSet(viewsets.ModelViewSet):
         return {"request": self.request}
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        parent_comment = serializer.validated_data.get("parent_comment")
+
+        if parent_comment:
+            serializer.save(user=self.request.user)
+
+        else:
+            model = self.request.data.get("model")
+            obj_id = self.request.data.get("object_id")
+
+            if not model or not obj_id:
+                raise serializers.ValidationError(
+                    "Model and object_id are required for top-level comments"
+                )
+
+            model_class = {"issue": Issue, "announcement": Announcement}.get(
+                model.lower()
+            )
+            if not model_class:
+                raise serializers.ValidationError("Invalid model name")
+
+            content_type = ContentType.objects.get_for_model(model_class)
+            serializer.save(
+                user=self.request.user, content_type=content_type, object_id=obj_id
+            )
 
     @action(detail=False, methods=["get"])
     def for_object(self, request):
@@ -116,7 +142,9 @@ class CommentViewSet(viewsets.ModelViewSet):
             return Response({"error": "Invalid model name"}, status=400)
 
         content_type = ContentType.objects.get_for_model(model_class)
-        comments = Comment.objects.filter(content_type=content_type, object_id=obj_id)
+        comments = Comment.objects.filter(
+            content_type=content_type, object_id=obj_id, parent_comment__isnull=True
+        )
         serializer = self.get_serializer(comments, many=True)
         return Response(serializer.data)
 

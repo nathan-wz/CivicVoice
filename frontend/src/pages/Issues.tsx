@@ -6,11 +6,17 @@ import { Link } from "react-router-dom";
 import issueHeading1 from "../assets/images/issue_heading_1.jpg";
 
 function Issues() {
-    const [issues, setIssues] = useState([{ id: 0 }]);
+    const [issues, setIssues] = useState([
+        {
+            id: 0,
+            title: "default",
+            description: "default",
+        },
+    ]);
 
     useEffect(() => {
         getIssues();
-    }, []);
+    }, [issues]);
 
     const getIssues = () => {
         api.get("/api/issues/")

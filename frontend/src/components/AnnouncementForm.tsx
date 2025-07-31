@@ -1,26 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../api";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import type { AnnouncementData } from "../types";
 
 interface AnnouncementFormProps {
     route: string;
+    initialData?: AnnouncementData;
 }
 
-function AnnouncementForm({ route }: AnnouncementFormProps) {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [issueReference, setIssueReference] = useState("");
+function AnnouncementForm({ route, initialData }: AnnouncementFormProps) {
+    const defaults = {
+        title: initialData?.title ?? "",
+        description: initialData?.description ?? "",
+        issueReference: initialData?.issue_reference ?? "",
+    };
+
+    const [title, setTitle] = useState<string>(defaults.title);
+    const [description, setDescription] = useState<string>(
+        defaults.description
+    );
+    const [issueReference, setIssueReference] = useState<string>(
+        defaults.issueReference
+    );
     const navigate = useNavigate();
 
-    const postAnnouncement = async (e: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        if (initialData) {
+            setTitle(defaults.title);
+            setDescription(defaults.description);
+            setIssueReference(defaults.issueReference);
+        }
+    }, [initialData]);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const payload = { title, description, issue_reference: issueReference };
+
         try {
-            const res = await api.post(route, {
-                title,
-                description,
-                issue_reference: issueReference,
-            });
-            console.log("Posted Announcement: ", res.data);
+            if (initialData) {
+                const res = await api.patch(route, payload);
+                console.log("Updated Announcement: ", res.data);
+            } else {
+                const res = await api.post(route, payload);
+                console.log("Posted Announcement: ", res.data);
+            }
             navigate("/announcements");
         } catch (error) {
             console.error("Error posting announcement", error);
@@ -28,7 +52,7 @@ function AnnouncementForm({ route }: AnnouncementFormProps) {
     };
 
     return (
-        <form onSubmit={postAnnouncement} className="home-form" action="">
+        <form onSubmit={handleSubmit} className="home-form" action="">
             <label htmlFor="title">Title</label>
             <input
                 type="text"

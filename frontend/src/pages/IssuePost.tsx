@@ -6,6 +6,7 @@ import SideMenu from "../components/SideMenu";
 import { type CommentData, type IssueData } from "../types";
 import CommentForm from "../components/CommentForm";
 import { formatDate } from "../utils/formatDate";
+import CommentSection from "../components/CommentSection";
 
 function IssuePost() {
     const { id } = useParams();
@@ -83,10 +84,7 @@ function IssuePost() {
                 </div>
 
                 <h2 className="mt-10">{comments?.length || 0} Comments</h2>
-                <CommentForm model="issue" objectId={issue.id} />
-                {comments?.map((comment) => (
-                    <Comment key={comment.id} comment={comment} />
-                ))}
+                <CommentSection model="issue" objectId={issue.id} />
             </div>
         </div>
     );

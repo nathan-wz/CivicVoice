@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer.tsx";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard.tsx";
@@ -68,7 +67,6 @@ function App() {
                 />
                 <Route path="*" element={<div>Page Not Found</div>} />
             </Routes>
-            {/* <Footer /> */}
         </BrowserRouter>
     );
 }
