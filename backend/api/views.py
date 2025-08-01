@@ -1,6 +1,8 @@
 from rest_framework import viewsets, status, permissions, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
@@ -157,3 +159,14 @@ class RegisterUserView(APIView):
             return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        user.auth_token.delete()
+        return Response(
+            {"detail": "Successfully logged out"}, status=status.HTTP_200_OK
+        )

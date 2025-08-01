@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
+    PieChart,
+    Pie,
     Tooltip,
-    ResponsiveContainer,
     Cell,
+    ResponsiveContainer,
+    Legend,
 } from "recharts";
 import api from "../api";
 
@@ -16,11 +15,38 @@ interface StatusData {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-    OPEN: "#3b82f6", // Tailwind blue-500
-    IN_PROGRESS: "#f59e0b", // Tailwind amber-500
-    RESOLVED: "#10b981", // Tailwind emerald-500
-    CLOSED: "#ef4444", // Tailwind red-500
-    ARCHIVED: "#a855f7", // Tailwind purple-500
+    OPEN: "#3b82f6",
+    IN_PROGRESS: "#f59e0b",
+    RESOLVED: "#10b981",
+    CLOSED: "#ef4444",
+    ARCHIVED: "#a855f7",
+};
+
+const renderLabel = ({
+    cx,
+    cy,
+    midAngle,
+    outerRadius,
+    percent,
+    index,
+}: any) => {
+    const RADIAN = Math.PI / 180;
+    const radius = outerRadius * 0.7;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    return (
+        <text
+            x={x}
+            y={y}
+            fill="#1f2937"
+            fontSize={12}
+            textAnchor="middle"
+            dominantBaseline="central"
+        >
+            {`${(percent * 100).toFixed(0)}%`}
+        </text>
+    );
 };
 
 function StatusChart() {
@@ -32,24 +58,47 @@ function StatusChart() {
         });
     }, []);
 
+    const chartData = data.map((d) => ({
+        ...d,
+        name: d.status,
+    }));
+
     return (
-        <div className="p-4 bg-white rounded-xl shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Issues by Status</h2>
-            <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={data}>
-                    <XAxis dataKey="status" />
-                    <YAxis allowDecimals={false} />
-                    <Tooltip />
-                    <Bar dataKey="count">
-                        {data.map((entry, index) => (
-                            <Cell
-                                key={`cell-${index}`}
-                                fill={STATUS_COLORS[entry.status] || "#6b7280"} // fallback to gray-500
-                            />
-                        ))}
-                    </Bar>
-                </BarChart>
-            </ResponsiveContainer>
+        <div className="p-6 bg-white rounded-xl shadow-lg flex flex-col md:flex-row items-center">
+            <div className="w-full md:w-2/3 h-96">
+                <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                        <Pie
+                            data={chartData}
+                            dataKey="count"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={100}
+                            labelLine={false}
+                            label={renderLabel}
+                        >
+                            {chartData.map((entry, index) => (
+                                <Cell
+                                    key={`cell-${index}`}
+                                    fill={
+                                        STATUS_COLORS[entry.status] || "#6b7280"
+                                    }
+                                />
+                            ))}
+                        </Pie>
+                        <Tooltip
+                            formatter={(value: number) => `${value} issues`}
+                        />
+                        <Legend
+                            layout="vertical"
+                            verticalAlign="middle"
+                            align="right"
+                            iconType="circle"
+                        />
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
         </div>
     );
 }
