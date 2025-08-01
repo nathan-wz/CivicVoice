@@ -1,11 +1,11 @@
 import { useState } from "react";
-import api from "../api";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import api from "../api";
 
 interface UserFormProps {
     route: string;
-    method: string;
+    method: "login" | "register";
 }
 
 function UserForm({ route, method }: UserFormProps) {
@@ -13,97 +13,101 @@ function UserForm({ route, method }: UserFormProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const navigate = useNavigate();
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
-    const name = method === "login" ? "Login" : "Register";
+    const navigate = useNavigate();
+    const { login } = useAuth(); // ✅ get login from AuthContext
+    const isLogin = method === "login";
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setError(null);
+
+        if (!isLogin && password !== confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
 
         try {
-            const payload =
-                method === "login"
-                    ? { username, password }
-                    : {
-                          username,
-                          email,
-                          password,
-                      };
+            setLoading(true);
+            const payload = isLogin
+                ? { username, password }
+                : { username, email, password };
 
             const res = await api.post(route, payload);
 
-            if (method === "login") {
-                localStorage.setItem(ACCESS_TOKEN, res.data.access);
-                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+            if (isLogin) {
+                const { access, refresh } = res.data;
+                login(access, refresh);
                 navigate("/");
             } else {
                 navigate("/login");
             }
-        } catch (error) {
-            console.error(error);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || "An error occurred.");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="user-form">
-            {/* Login */}
+            <h2 className="text-xl font-semibold mb-2">
+                {isLogin ? "Login" : "Register"}
+            </h2>
 
-            {method === "login" ? (
+            {error && <p className="text-red-500 mb-2">{error}</p>}
+
+            <label htmlFor="username">Username</label>
+            <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+            />
+
+            {!isLogin && (
                 <>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-
-                    <label htmlFor="password">password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </>
-            ) : (
-                <>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-
                     <label htmlFor="email">Email</label>
                     <input
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                     />
+                </>
+            )}
 
-                    <label htmlFor="password">password</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
+            <label htmlFor="password">Password</label>
+            <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+            />
 
+            {!isLogin && (
+                <>
                     <label htmlFor="confirm-password">Confirm Password</label>
                     <input
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        required
                     />
-                    {/* 
-                    <label htmlFor="location">Location</label>
-                    <div className="flex justify-between w-full">
-                        <input type="text" placeholder="Country" />
-                        <input type="text" placeholder="City" />
-                        <input type="text" placeholder="County" />
-                    </div> */}
                 </>
             )}
 
-            <input type="submit" value={name} className="button" />
+            <input
+                type="submit"
+                value={
+                    loading ? "Please wait..." : isLogin ? "Login" : "Register"
+                }
+                className="button"
+                disabled={loading}
+            />
         </form>
     );
 }
