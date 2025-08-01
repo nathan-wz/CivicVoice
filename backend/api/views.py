@@ -1,4 +1,5 @@
 from rest_framework import viewsets, status, permissions, serializers
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -166,7 +167,11 @@ class LogoutView(APIView):
 
     def post(self, request):
         user = request.user
-        user.auth_token.delete()
+        try:
+            token = Token.objects.get(user=user)
+            token.delete()
+        except Token.DoesNotExist:
+            pass
         return Response(
-            {"detail": "Successfully logged out"}, status=status.HTTP_200_OK
+            {"detail": "Successfully logged out."}, status=status.HTTP_200_OK
         )
