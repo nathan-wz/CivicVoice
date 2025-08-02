@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import userIcon from "../assets/icons/circle-user-solid-full.svg";
+import { ACCESS_TOKEN } from "../constants";
+import { getUserIdFromToken } from "../utils/getUserIdFromToken";
 
 function Navbar() {
     const { isAuthenticated, logout } = useAuth();
+    const token = localStorage.getItem(ACCESS_TOKEN);
+    const userId = token ? getUserIdFromToken(token) : null;
 
     return (
         <nav className="z-999 sticky top-0 h-15 px-2 bg-primary flex justify-between items-center">
@@ -12,12 +17,17 @@ function Navbar() {
 
             <div className="space-x-3">
                 {isAuthenticated ? (
-                    <button
-                        onClick={logout}
-                        className="nav-btn bg-red-500 hover:bg-red-600 text-white"
-                    >
-                        Logout
-                    </button>
+                    <div className="flex space-x-1">
+                        <Link to={`/profile/${userId}`}>
+                            <img className="h-12" src={userIcon} alt="" />
+                        </Link>
+                        <button
+                            onClick={logout}
+                            className="nav-btn bg-red-500 hover:bg-red-600 text-white"
+                        >
+                            Logout
+                        </button>
+                    </div>
                 ) : (
                     <>
                         <Link to="/login" className="nav-btn">

@@ -1,52 +1,76 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../api";
+import type { UserData } from "../types";
 
 interface UserFormProps {
     route: string;
-    method: "login" | "register";
+    method: "login" | "update" | "register";
+    initialData?: UserData;
 }
 
-function UserForm({ route, method }: UserFormProps) {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
+function UserForm({ route, method, initialData }: UserFormProps) {
+    const isLogin = method === "login";
+    const isRegister = method === "register";
+    const isUpdate = method === "update";
+
+    const [username, setUsername] = useState<string | undefined>("");
+    const [email, setEmail] = useState<string | undefined>("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
-    const { login } = useAuth(); // ✅ get login from AuthContext
-    const isLogin = method === "login";
+    const { login } = useAuth();
+
+    // Pre-fill form if updating
+    useEffect(() => {
+        if (isUpdate && initialData) {
+            setUsername(initialData.username);
+            setEmail(initialData.email);
+        }
+    }, [isUpdate, initialData]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError(null);
 
-        if (!isLogin && password !== confirmPassword) {
+        if ((isRegister || isUpdate) && password !== confirmPassword) {
             setError("Passwords do not match.");
             return;
         }
 
         try {
             setLoading(true);
-            const payload = isLogin
-                ? { username, password }
-                : { username, email, password };
-
-            const res = await api.post(route, payload);
 
             if (isLogin) {
+                const res = await api.post(route, { username, password });
                 const { access, refresh } = res.data;
                 login(access, refresh);
                 navigate("/");
-            } else {
+            } else if (isRegister) {
+                await api.post(route, { username, email, password });
                 navigate("/login");
+            } else if (isUpdate) {
+                const payload: Partial<UserData & { password?: string }> = {
+                    username,
+                    email,
+                };
+                if (password) {
+                    payload.password = password;
+                }
+                await api.patch(route, payload);
+                navigate(`/profile/${initialData?.id}`);
             }
         } catch (err: any) {
             console.error(err);
-            setError(err.message || "An error occurred.");
+            setError(
+                err.response?.data?.detail ||
+                    err.message ||
+                    "An error occurred."
+            );
         } finally {
             setLoading(false);
         }
@@ -55,7 +79,7 @@ function UserForm({ route, method }: UserFormProps) {
     return (
         <form onSubmit={handleSubmit} className="user-form">
             <h2 className="text-xl font-semibold mb-2">
-                {isLogin ? "Login" : "Register"}
+                {isLogin ? "Login" : isRegister ? "Register" : "Update Profile"}
             </h2>
 
             {error && <p className="text-red-500 mb-2">{error}</p>}
@@ -68,7 +92,7 @@ function UserForm({ route, method }: UserFormProps) {
                 required
             />
 
-            {!isLogin && (
+            {(isRegister || isUpdate) && (
                 <>
                     <label htmlFor="email">Email</label>
                     <input
@@ -80,22 +104,24 @@ function UserForm({ route, method }: UserFormProps) {
                 </>
             )}
 
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">
+                {isUpdate ? "New Password (optional)" : "Password"}
+            </label>
             <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
+                required={isLogin || isRegister}
             />
 
-            {!isLogin && (
+            {(isRegister || isUpdate) && (
                 <>
                     <label htmlFor="confirm-password">Confirm Password</label>
                     <input
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
+                        required={!!password}
                     />
                 </>
             )}
@@ -103,7 +129,13 @@ function UserForm({ route, method }: UserFormProps) {
             <input
                 type="submit"
                 value={
-                    loading ? "Please wait..." : isLogin ? "Login" : "Register"
+                    loading
+                        ? "Please wait..."
+                        : isLogin
+                        ? "Login"
+                        : isRegister
+                        ? "Register"
+                        : "Update Profile"
                 }
                 className="button"
                 disabled={loading}

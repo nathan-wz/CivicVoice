@@ -12,7 +12,7 @@ function UpdateIssue() {
 
     useEffect(() => {
         if (!id) return;
-        api.get(`/api/issues/${id}`)
+        api.get(`/api/issues/${id}/`)
             .then((res) => setIssue(res.data))
             .catch((err) => console.log(err));
     }, [id]);

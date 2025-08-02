@@ -65,7 +65,7 @@
     }
 
     .user-form {
-        @apply border border-secondary-alt shadow-xl rounded-lg py-10 px-8 my-10 sm:w-xl md:w-[30%] flex flex-col;
+        @apply border border-secondary-alt shadow-xl rounded-lg py-10 px-8 my-10 sm:w-xl flex flex-col;
     }
 
     .user-form-layout {
@@ -73,7 +73,7 @@
     }
 
     .user-form-icon {
-        @apply flex flex-col;
+        @apply hidden md:flex flex-col;
     }
 
     .user-form-icon-img {

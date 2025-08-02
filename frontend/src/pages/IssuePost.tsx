@@ -1,10 +1,8 @@
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../api";
-import Comment from "../components/Comment";
 import SideMenu from "../components/SideMenu";
 import { type CommentData, type IssueData } from "../types";
-import CommentForm from "../components/CommentForm";
 import { formatDate } from "../utils/formatDate";
 import CommentSection from "../components/CommentSection";
 

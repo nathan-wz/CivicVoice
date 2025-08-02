@@ -15,6 +15,8 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import UpdateIssue from "./pages/UpdateIssue.tsx";
 import UpdateAnnouncement from "./pages/UpdateAnnouncement.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
+import Profile from "./pages/Profile.tsx";
+import UpdateProfile from "./pages/UpdateProfile.tsx";
 
 function App() {
     return (
@@ -23,7 +25,11 @@ function App() {
                 <Navbar />
                 <Routes>
                     <Route path="/landing" element={<Landing />} />
-                    <Route path="/profile/:id" element={<div>Profile</div>} />
+                    <Route path="/profile/:id" element={<Profile />} />
+                    <Route
+                        path="/profile/:id/edit"
+                        element={<UpdateProfile />}
+                    />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/" element={<Dashboard />} />
