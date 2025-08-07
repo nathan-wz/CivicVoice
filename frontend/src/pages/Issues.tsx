@@ -16,7 +16,7 @@ function Issues() {
 
     useEffect(() => {
         getIssues();
-    }, [issues]);
+    }, []);
 
     const getIssues = () => {
         api.get("/api/issues/")

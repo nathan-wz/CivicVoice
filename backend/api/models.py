@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import AbstractUser, Group, Permission
+from smart_selects.db_fields import ChainedForeignKey
 
 
 class Role(models.Model):
@@ -21,21 +22,56 @@ class Role(models.Model):
         return self.name
 
 
-class Location(models.Model):
-    country = models.CharField(max_length=100, help_text="The country of the location")
-    city = models.CharField(max_length=100, help_text="The city of the location")
-    county = models.CharField(
-        max_length=100, help_text="The county/region of the location"
+class Country(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class City(models.Model):
+    name = models.CharField(max_length=100)
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, related_name="cities"
     )
+
+    class Meta:
+        unique_together = ("name", "country")
+        ordering = ["country__name", "name"]
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class County(models.Model):
+    name = models.CharField(max_length=100)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ("name", "city")
+        ordering = ["city__name", "name"]
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Location(models.Model):
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    county = models.ForeignKey(County, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = "Location"
         verbose_name_plural = "Locations"
         unique_together = ("country", "city", "county")
-        ordering = ["country", "city", "county"]
+        ordering = ["county__name", "city__name", "county__name"]
 
     def __str__(self):
-        return f"{self.city}, {self.county}, {self.country}"
+        city = self.county.city
+        return f"{self.county.name}, {city.name}, {city.country.name}"
 
 
 class User(AbstractUser):
@@ -69,14 +105,40 @@ class User(AbstractUser):
         related_name="users",
         help_text="The role of the user within the platform",
     )
-    location = models.ForeignKey(
-        Location,
+    country = models.ForeignKey(
+        Country,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="users",
-        help_text="The geographical location of the user",
     )
+
+    city = ChainedForeignKey(
+        City,
+        chained_field="country",
+        chained_model_field="country",
+        show_all=False,
+        auto_choose=True,
+        sort=True,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="users",
+    )
+
+    county = ChainedForeignKey(
+        County,
+        chained_field="city",
+        chained_model_field="city",
+        show_all=False,
+        auto_choose=True,
+        sort=True,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="users",
+    )
+
     joined_at = models.DateTimeField(
         auto_now_add=True, help_text="The date and time the user joined"
     )

@@ -11,4 +11,5 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/user/register/", RegisterUserView.as_view(), name="register"),
     path("api/logout/", LogoutView.as_view(), name="logout"),
+    path("chaining/", include("smart_selects.urls")),
 ]

@@ -1,0 +1,14 @@
+{
+  "Kenya": {
+    "Nairobi": ["Nairobi City"],
+    "Kiambu": ["Thika", "Ruiru", "Limuru"]
+  },
+  "Uganda": {
+    "Kampala": ["Kampala Central", "Nakawa"],
+    "Wakiso": ["Entebbe", "Nansana"]
+  },
+  "Tanzania": {
+    "Dar es Salaam": ["Ilala", "Kinondoni"],
+    "Arusha": ["Arusha City", "Usa River"]
+  }
+}

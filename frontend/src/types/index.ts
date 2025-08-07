@@ -1,7 +1,30 @@
+export interface County {
+    id: number;
+    name: string;
+}
+export interface City {
+    id: number;
+    name: string;
+    country: number;
+}
+
+export interface County {
+    id: number;
+    name: string;
+    city: number;
+}
+
 export interface UserData {
     id?: number;
     username?: string;
     email?: string;
+    country: number | null;
+    city: number | null;
+    county: number | null;
+
+    country_id?: number;
+    county_id?: number;
+    city_id?: number;
 }
 
 export interface CommentData {

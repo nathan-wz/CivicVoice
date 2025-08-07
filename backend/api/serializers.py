@@ -1,6 +1,16 @@
 from rest_framework import serializers
 from django.contrib.contenttypes.models import ContentType
-from .models import Role, Location, User, Issue, Comment, Announcement
+from .models import (
+    Role,
+    Location,
+    User,
+    Issue,
+    Comment,
+    Announcement,
+    Country,
+    City,
+    County,
+)
 
 
 class RoleSerializer(serializers.ModelSerializer):
@@ -12,12 +22,45 @@ class RoleSerializer(serializers.ModelSerializer):
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = "__all__"
+        fields = ["id", "country", "county", "city"]
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ["id", "name"]
+
+
+class CitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = City
+        fields = ["id", "name", "country"]
+
+
+class CountySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = County
+        fields = ["id", "name", "city"]
 
 
 class UserSerializer(serializers.ModelSerializer):
     role = RoleSerializer(read_only=True)
-    location = LocationSerializer(read_only=True)
+
+    # write-only ID input
+    country_id = serializers.PrimaryKeyRelatedField(
+        queryset=Country.objects.all(), source="country", write_only=True
+    )
+    county_id = serializers.PrimaryKeyRelatedField(
+        queryset=County.objects.all(), source="county", write_only=True
+    )
+    city_id = serializers.PrimaryKeyRelatedField(
+        queryset=City.objects.all(), source="city", write_only=True
+    )
+
+    # read-only nested objects
+    country = CountrySerializer(read_only=True)
+    county = CountySerializer(read_only=True)
+    city = CitySerializer(read_only=True)
 
     class Meta:
         model = User
@@ -27,7 +70,12 @@ class UserSerializer(serializers.ModelSerializer):
             "password",
             "email",
             "role",
-            "location",
+            "country_id",
+            "city_id",
+            "county_id",
+            "country",
+            "city",
+            "county",
             "joined_at",
         ]
         extra_kwargs = {"password": {"write_only": True}}
@@ -39,7 +87,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 class IssueSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    affected_locations = LocationSerializer(many=True, read_only=True)
+    affected_locations = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Location.objects.all()
+    )
 
     class Meta:
         model = Issue

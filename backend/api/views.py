@@ -1,16 +1,29 @@
-from rest_framework import viewsets, status, permissions, serializers
+from rest_framework import viewsets, status, permissions, serializers, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from django.db.models import Count
 from django.contrib.contenttypes.models import ContentType
-from .models import Role, Location, User, Issue, Comment, Announcement
+from .models import (
+    Role,
+    Location,
+    User,
+    Issue,
+    Comment,
+    Announcement,
+    Country,
+    City,
+    County,
+)
 from .serializers import (
     RoleSerializer,
     LocationSerializer,
+    CountrySerializer,
+    CitySerializer,
+    CountySerializer,
     UserSerializer,
     IssueSerializer,
     CommentSerializer,
@@ -26,6 +39,30 @@ class RoleViewSet(viewsets.ModelViewSet):
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = UserSerializer
+
+
+class CountryListView(generics.ListAPIView):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    permission_classes = [AllowAny]
+
+
+class CityListView(generics.ListAPIView):
+    serializer_class = CitySerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        country_id = self.request.query_params.get("country")
+        return City.objects.filter(country_id=country_id)
+
+
+class CountyListView(generics.ListAPIView):
+    serializer_class = CountySerializer
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        city_id = self.request.query_params.get("city")
+        return County.objects.filter(city_id=city_id)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -153,6 +190,8 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class RegisterUserView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
