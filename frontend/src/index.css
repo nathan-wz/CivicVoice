@@ -39,13 +39,19 @@
     }
 
     input[type="submit"] {
-        @apply self-end p-4 bg-primary text-2xl font-bold text-secondary-alt rounded-md;
+        @apply self-end p-4 bg-primary text-2xl font-bold text-secondary-alt rounded-md
+               transition-colors duration-200
+               hover:bg-primary-alt
+               active:brightness-90;
     }
 }
 
 @layer components {
     .nav-btn {
-        @apply p-2 mx-2 font-bold bg-secondary-alt text-primary rounded-lg;
+        @apply p-2 mx-2 font-bold bg-secondary-alt text-primary rounded-lg
+               transition-colors duration-200
+               hover:bg-secondary hover:text-primary-alt
+               active:brightness-90;
     }
 
     .landing-section {
@@ -57,11 +63,17 @@
     }
 
     .button {
-        @apply p-4 bg-primary text-2xl font-bold text-secondary-alt rounded-md;
+        @apply p-4 bg-primary text-2xl font-bold text-secondary-alt rounded-md
+               transition-colors duration-200
+               hover:bg-primary-alt
+               active:brightness-90;
     }
 
     .button-alt {
-        @apply p-4 mx-4 bg-secondary text-2xl font-bold text-primary-alt rounded-md;
+        @apply p-4 mx-4 bg-secondary text-2xl font-bold text-primary-alt rounded-md
+               transition-colors duration-200
+               hover:bg-secondary-alt hover:text-primary
+               active:brightness-90;
     }
 
     .user-form {
@@ -89,11 +101,14 @@
     }
 
     .sidemenu-button {
-        @apply p-4 m-1 bg-primary text-left text-xl font-bold text-secondary-alt rounded-md;
+        @apply p-4 m-1 bg-primary text-left text-xl font-bold text-secondary-alt rounded-md
+               transition-colors duration-200
+               hover:bg-primary-alt
+               active:brightness-90;
     }
 
     .home-container {
-        @apply flex justify-center;
+        @apply flex justify-center space-x-2;
     }
 
     .home-content {

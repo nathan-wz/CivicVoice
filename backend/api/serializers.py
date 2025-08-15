@@ -87,9 +87,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 class IssueSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    affected_locations = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=Location.objects.all()
-    )
 
     class Meta:
         model = Issue
@@ -103,7 +100,6 @@ class IssueSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "vote_count",
-            "affected_locations",
         ]
 
 

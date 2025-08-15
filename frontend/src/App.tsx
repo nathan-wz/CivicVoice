@@ -5,7 +5,6 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard.tsx";
 import IssuePost from "./pages/IssuePost.tsx";
 import PostAnIssue from "./pages/PostAnIssue";
-import PinnedIssues from "./pages/PinnedIssues";
 import Issues from "./pages/Issues.tsx";
 import Announcements from "./pages/Announcements.tsx";
 import MakeAnAnnouncement from "./pages/MakeAnAnnouncement.tsx";
@@ -51,7 +50,6 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
-                    <Route path="/pinned-issues" element={<PinnedIssues />} />
                     <Route path="/announcements" element={<Announcements />} />
                     <Route
                         path="/make-an-announcement"

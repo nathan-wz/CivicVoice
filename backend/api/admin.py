@@ -16,11 +16,6 @@ class CustomUserAdmin(UserAdmin):
     )
 
 
-@admin.register(Issue)
-class IssueAdmin(admin.ModelAdmin):
-    filter_horizontal = ("affected_locations",)
-
-
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     search_fields = ["city__name", "county__name", "country__name"]

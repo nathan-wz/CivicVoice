@@ -28,15 +28,6 @@ function IssuePost() {
             .catch((err) => console.error(err));
     }, [id]);
 
-    // const vote = async (type: "upvote" | "downvote") => {
-    //     try {
-    //         const res = await api.post(`/issues/${issue?.id}/${type}/`);
-    //         setVoteCount(res.data.vote_count);
-    //     } catch (error) {
-    //         console.error("Error voting", error);
-    //     }
-    // }
-
     if (!issue) return <p>Loading...</p>;
 
     return (
@@ -56,29 +47,19 @@ function IssuePost() {
                     <br />
                     <h4>Category: {issue.category}</h4>
                     <h4>status: {issue.status}</h4>
-                    <Link
-                        to={`/issue/${issue.id}/edit`}
-                        className="p-3 bg-primary text-secondary-alt rounded-md"
-                    >
-                        Update
-                    </Link>
+
+                    <br />
+                    <div>
+                        <Link
+                            to={`/issue/${issue.id}/edit`}
+                            className="p-3 bg-primary text-secondary-alt rounded-md"
+                        >
+                            Update
+                        </Link>
+                    </div>
+                    <br />
                     <hr />
                     <br />
-                    {/* <div className="flex items-center w-40 space-x-3">
-                        <button
-                            className="bg-slate-200 rounded-md"
-                            onClick={() => vote("upvote")}
-                        >
-                            👍 Upvote
-                        </button>
-                        <div>{voteCount}</div>
-                        <button
-                            className="bg-slate-200 rounded-md"
-                            onClick={() => vote("downvote")}
-                        >
-                            👎 Downvote
-                        </button>
-                    </div> */}
                 </div>
 
                 <h2 className="mt-10">{comments?.length || 0} Comments</h2>

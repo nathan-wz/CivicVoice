@@ -114,7 +114,14 @@ function UserForm({ route, method, initialData }: UserFormProps) {
                 login(access, refresh);
                 navigate("/");
             } else if (isRegister) {
-                await api.post(route, { username, email, password });
+                await api.post(route, {
+                    username,
+                    email,
+                    password,
+                    country_id: selectedCountry ?? undefined,
+                    city_id: selectedCity ?? undefined,
+                    county_id: selectedCounty ?? undefined,
+                });
                 navigate("/login");
             } else if (isUpdate) {
                 const payload: Partial<UserData & { password?: string }> = {

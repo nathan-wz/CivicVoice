@@ -161,12 +161,6 @@ class Issue(models.Model):
     )
     title = models.CharField(max_length=255, help_text="A concise title for the issue")
     description = models.TextField(help_text="A detailed description of the issue")
-    affected_locations = models.ManyToManyField(
-        Location,
-        related_name="issues_affected",
-        blank=True,
-        help_text="Locations affected by this issue",
-    )
     category = models.CharField(
         max_length=100,
         help_text="The category of the issue (e.g., 'Infrastructure', 'Environment')",

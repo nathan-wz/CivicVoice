@@ -3,6 +3,8 @@ import { useAuth } from "../context/AuthContext";
 import userIcon from "../assets/icons/circle-user-solid-full.svg";
 import { ACCESS_TOKEN } from "../constants";
 import { getUserIdFromToken } from "../utils/getUserIdFromToken";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
     const { isAuthenticated, logout } = useAuth();
@@ -17,9 +19,13 @@ function Navbar() {
 
             <div className="space-x-3">
                 {isAuthenticated ? (
-                    <div className="flex space-x-1">
+                    <div className="flex items-center space-x-1">
                         <Link to={`/profile/${userId}`}>
-                            <img className="h-12" src={userIcon} alt="" />
+                            <FontAwesomeIcon
+                                icon={faCircleUser}
+                                size="2xl"
+                                style={{ color: "#f4e89f" }}
+                            />
                         </Link>
                         <button
                             onClick={logout}

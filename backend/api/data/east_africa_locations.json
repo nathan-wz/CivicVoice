@@ -1,14 +1,38 @@
 {
   "Kenya": {
-    "Nairobi": ["Nairobi City"],
-    "Kiambu": ["Thika", "Ruiru", "Limuru"]
+    "Nairobi": ["Kasarani", "Roysambu", "Ruaraka", "Embakasi North", "Embakasi Central", "Embakasi East", "Embakasi South", "Dagoretti North", "Dagoretti South", "Langata", "Kibra", "Westlands", "Mathare", "Starehe", "Kamukunji", "Makadara"],
+    "Mombasa": ["Mombasa Island", "Likoni", "Changamwe", "Kisauni"],
+    "Nakuru": ["Nakuru Town East", "Nakuru Town West", "Rongai"],
+    "Eldoret": ["Turbo", "Soy", "Moiben", "Ainabkoi", "Kapsaret", "Kesses"],
+    "Kisumu": ["Kisumu East", "Kisumu West", "Kisumu Central", "Seme", "Nyando", "Nyakach", "Muhoroni"]
   },
   "Uganda": {
-    "Kampala": ["Kampala Central", "Nakawa"],
-    "Wakiso": ["Entebbe", "Nansana"]
+    "Kampala": ["Kampala Central", "Nakawa", "Kawempe", "Makindye", "Rubaga"],
+    "Gulu": ["Awach", "Bungatira", "Koro", "Laroo", "Layibi", "Odek", "Ongako", "Paicho", "Palaro"],
+    "Mbarara": ["Kakoba", "Kamukuzi", "Nyamitanga", "Biharwe", "Kakiika", "Nyakayojo"]
   },
   "Tanzania": {
-    "Dar es Salaam": ["Ilala", "Kinondoni"],
-    "Arusha": ["Arusha City", "Usa River"]
+    "Dar es Salaam": ["Ilala", "Kinondoni", "Temeke", "Ubungo", "Kigamboni"],
+    "Arusha": ["Arusha City", "Meru", "Karatu", "Longido", "Monduli", "Ngorongoro"],
+    "Mwanza": ["Ilemela", "Nyamagana"]
+  },
+  "Rwanda": {
+    "Kigali": ["Gasabo", "Kicukiro", "Nyarugenge"],
+    "Musanze": ["Muhoza", "Cyuve", "Gacaca", "Kimonyi", "Muko", "Musanze", "Rwaza"]
+  },
+  "Burundi": {
+    "Gitega": ["Gitega", "Bugendana", "Bukirasazi", "Giheta", "Makebuko", "Mutaho", "Nyarusange"],
+    "Bujumbura": ["Buyenzi", "Bwiza", "Cibitoke", "Gihosha", "Kamenge", "Kinama", "Kinindo", "Musaga", "Ngagara", "Nyakabiga", "Rohero"]
+  },
+  "South Sudan": {
+    "Juba": ["Juba Payam", "Munuki Payam"],
+    "Aweil": ["Aweil East", "Aweil South", "Aweil West"],
+    "Malakal": ["Malakal town", "Malakal East"]
+  },
+  "Somalia": {
+    "Mogadishu": ["Wadajir", "Dharkenley", "Daynile", "Wardigley", "H/Wadaag", "Waberi", "Hodan", "Shibis", "Abdiaziz", "Shangani", "Karaan", "Yaqshid", "Huriwaa", "Kahda", "H/Jijab", "H/Weyne", "Bondere"]
+  },
+  "Democratic Republic of Congo": {
+    "Kinshasa": ["Bandalungwa", "Barumbu", "Bumbu", "Gombe", "Kalamu", "Kasa-Vubu", "Kinshasa", "Kintambo", "Kisenso", "Lemba", "Limete", "Lingwala", "Makala", "Matete", "Mont Ngafula", "Ndjili", "Ngaba", "Ngaliema", "Ngiri-Ngiri", "Selembao", "Kimbanseke", "Masina", "Maluku", "Nsele"]
   }
 }
