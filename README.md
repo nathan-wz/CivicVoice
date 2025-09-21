@@ -6,7 +6,6 @@ CivicVoice is a web application designed to empower citizens to voice their conc
 - **User Authentication & Roles** – Secure login with role-based access (citizens, moderators, administrators).  
 - **Issue Reporting** – Users can submit issues tied to specific locations (country > county > city).  
 - **Comment System** – Nested comments with reply functionality for interactive discussions.  
-- **Location Hierarchy** – Automatic creation and management of countries, counties, and cities.  
 - **Interactive Frontend** – Built with React and Tailwind CSS for a clean, responsive UI.  
 - **PostgreSQL Database** – Robust data storage optimized for relational queries.  
 - **Django Backend** – RESTful APIs with Django providing reliable backend services.  
